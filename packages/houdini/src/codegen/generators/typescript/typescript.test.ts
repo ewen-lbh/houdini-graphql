@@ -263,6 +263,7 @@ describe('typescript', function () {
 			        };
 			        "types": {};
 			        "defaults": {};
+			        "runtimeScalars": {};
 			    };
 			};
 		`)
@@ -353,6 +354,7 @@ describe('typescript', function () {
 			        };
 			        "types": {};
 			        "defaults": {};
+			        "runtimeScalars": {};
 			    };
 			};
 		`)
@@ -865,6 +867,7 @@ describe('typescript', function () {
 			        };
 			        "types": {};
 			        "defaults": {};
+			        "runtimeScalars": {};
 			    };
 			    "policy": "CacheOrNetwork";
 			    "partial": false;
@@ -1128,6 +1131,7 @@ describe('typescript', function () {
 			            };
 			        };
 			        "defaults": {};
+			        "runtimeScalars": {};
 			    };
 			};
 		`)
@@ -1356,6 +1360,7 @@ describe('typescript', function () {
 			            };
 			        };
 			        "defaults": {};
+			        "runtimeScalars": {};
 			    };
 			    "policy": "CacheOrNetwork";
 			    "partial": false;
@@ -2296,6 +2301,7 @@ describe('typescript', function () {
 			        };
 			        "types": {};
 			        "defaults": {};
+			        "runtimeScalars": {};
 			    };
 			    "policy": "CacheOrNetwork";
 			    "partial": false;
@@ -2700,6 +2706,7 @@ describe('typescript', function () {
 			            };
 			        };
 			        "defaults": {};
+			        "runtimeScalars": {};
 			    };
 			};
 		`)
@@ -2816,7 +2823,8 @@ describe('typescript', function () {
 			        },
 
 			        "types": {},
-			        "defaults": {}
+			        "defaults": {},
+			        "runtimeScalars": {}
 			    },
 
 			    "policy": "CacheOrNetwork",
