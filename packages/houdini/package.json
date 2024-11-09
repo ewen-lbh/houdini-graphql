@@ -1,7 +1,7 @@
 {
-    "name": "houdini",
-    "version": "1.3.0",
-    "description": "The disappearing GraphQL clients",
+    "name": "@ewen-lbh/houdini",
+    "version": "1.4.0",
+    "description": "The disappearing GraphQL clients - my fork with additional conveniences",
     "keywords": [
         "typescript",
         "graphql",
