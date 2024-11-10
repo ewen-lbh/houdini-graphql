@@ -47,8 +47,8 @@ export default function (opts?: PluginConfig): Plugin[] {
 		// make sure we behave as if we're generating from inside the plugin (changes logging behavior)
 		config.pluginMode = true
 
-		if (opts?.autoCodeGen === 'smart') {
-		    const isGraphQLFile = /\.g(raph)?ql$/.test(absoluteFilepath)
+		if (opts?.autoCodeGen === 'smart' && absolutePath) {
+		    const isGraphQLFile = /\.g(raph)?ql$/.test(absolutePath)
 			const fileContents = await readFile(absolutePath).then((buf) => buf.toString('utf8'))
 			if (fileContents && isGraphQLFile) {
 				// For graphql files, the extractedDocuments entry contains a single graphql "document" (which does not have to be an actual document) named '_' which is the entire file contents
@@ -56,7 +56,7 @@ export default function (opts?: PluginConfig): Plugin[] {
 				const previousContent = extractedDocuments[absolutePath]?._.trim() ?? ''
 				// If the file is empty, don't assume anything changed
 				if (fileContents !== "" && previousContent !== fileContents) {
-						extractedDocuments[absoluteFilepath] = { _: fileContents }
+						extractedDocuments[absolutePath] = { _: fileContents }
 				} else {
 						return
 				}
