@@ -6,7 +6,7 @@ import { watchAndRun } from 'vite-plugin-watch-and-run'
 import generate from '../codegen'
 import type { PluginConfig } from '../lib'
 import { getConfig, formatErrors, path, loadLocalSchema } from '../lib'
-import { graphQLDocumentsChanged } from './documents'
+import { extractGraphQLStrings, graphQLDocumentsChanged } from './documents'
 import houdini_vite from './houdini'
 import { watch_local_schema, watch_remote_schema } from './schema'
 
@@ -51,9 +51,18 @@ export default function (opts?: PluginConfig): Plugin[] {
 		if (opts?.autoCodeGen === 'smart' && absolutePath && !absolutePath.endsWith('.gql')) {
 			const fileContents = await readFile(absolutePath).then((buf) => buf.toString('utf8'))
 			if (fileContents) {
+				const previousDocuments = extractedDocuments[absolutePath]
+				if (!previousDocuments) {
+					// To prevent full-page reloads every time we change something in a new document, just don't reload.
+					// Second change of the same document will trigger a reload
+					// It's better that way since most non-.gql files are modified for non-gql reasons most of the time
+					const [_, documents] = graphQLDocumentsChanged(fileContents, {})
+					extractedDocuments[absolutePath] = documents
+					return
+				}
+
 				const [documentsChanged, documents] = graphQLDocumentsChanged(
-					fileContents,
-					extractedDocuments[absolutePath]
+					fileContents,previousDocuments
 				)
 
 				if (documentsChanged) {
