@@ -204,9 +204,12 @@ export async function runPipeline(config: Config, docs: Document[]) {
 	}
 }
 
-async function collectDocuments(config: Config): Promise<Document[]> {
-	// the first step we have to do is grab a list of every file in the source tree
-	let sourceFiles = await config.sourceFiles()
+export async function collectDocuments(
+	config: Config,
+	...sourceFiles: string[]
+): Promise<Document[]> {
+	// default to every file in the source tree, if no files are provided
+	if (sourceFiles.length === 0) sourceFiles = await config.sourceFiles()
 
 	// the list of documents we found
 	const documents: DiscoveredDoc[] = []

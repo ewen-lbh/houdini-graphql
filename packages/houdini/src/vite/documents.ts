@@ -1,24 +1,29 @@
+import { print } from 'graphql'
+import type { Config, Document } from 'src/lib'
+
+import { collectDocuments } from '../codegen'
+
 /**
  * Check if a file has changed graphql documents
  * @param source the source code of the file
  * @param previousDocuments previous documents
  * @returns [documents changed?, new documents object]
  */
-export function graphQLDocumentsChanged(
-	source: string,
-	previousDocuments: Record<string, string> | undefined
-): [boolean, Record<string, string>] {
-	const newDocuments = extractDocuments(source)
+export async function graphQLDocumentsChanged(
+	config: Config,
+	sourcePath: string,
+	previousDocuments: Document[] | undefined
+): Promise<[boolean, Document[]]> {
+	const newDocuments = await collectDocuments(config, sourcePath)
 	if (previousDocuments === undefined) return [true, newDocuments]
-	const newNames = Object.keys(newDocuments)
-	const oldNames = Object.keys(previousDocuments)
-
-	if (newNames.length !== oldNames.length) return [true, newDocuments]
+	if (previousDocuments.length !== newDocuments.length) return [true, newDocuments]
 
 	return [
-		!newNames.every(
-			(key) => key in previousDocuments && previousDocuments[key] === newDocuments[key]
-		),
+		!newDocuments.every((newDoc) => {
+			const oldDoc = previousDocuments.find((oldDoc) => oldDoc.name === newDoc.name)
+			if (!oldDoc) return true
+			return print(oldDoc.document) !== print(newDoc.document)
+		}),
 		newDocuments,
 	]
 }
